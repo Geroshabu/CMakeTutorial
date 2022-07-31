@@ -70,3 +70,15 @@ cxx ファイルで、ヘッダファイルをインクルードし、バージ�
 cout << Tutorial_VERSION_MAJOR << "."
      << Tutorial_VERSION_MINOR << endl;
 ```
+
+## 必要な C++ バージョンの指定
+
+tutorial.cxxで、特定のC++バージョンの機能を使おうとするときは、必要となるC++バージョンを明示的に指定した方がよい。
+
+下記のようにすれば、必要なC++バージョンを指定できる。(この例ではC++11を指定。)
+この記述は add_executable よりも前に必要。
+
+```cmake
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+```
