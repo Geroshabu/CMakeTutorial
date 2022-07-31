@@ -27,3 +27,46 @@ cmake --build .
 ```
 
 でビルド。
+
+## バージョン番号の利用
+
+CMakeLists.txt でバージョン番号を定義。
+
+```cmake
+project(Tutorial VERSION 1.0)
+```
+
+バージョン番号をコード中に橋渡しするためのファイルを作成する。
+名前はTutorialConfig.hpp.inとした。
+
+```cpp
+#define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@
+#define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@
+```
+
+`@Tutorial_VERSION_MAJOR@` と `@Tutorial_VERSION_MINOR@` のところが、バージョン番号に置き換わったヘッダファイルが出来上がるらしい。
+
+上記のファイルと、置き換え後のヘッダファイル名を、configure_fileで指定する。
+
+```cmake
+configure_file(TutorialConfig.hpp.in TutorialConfig.hpp)
+```
+
+生成されたヘッダファイルを、ビルド時に見つけられるように、ヘッダファイルを探すパスを指定する。
+
+```cmake
+target_include_directories(Tutorial PUBLIC
+                           "${PROJECT_BINARY_DIR}"
+                           )
+```
+
+cxx ファイルで、ヘッダファイルをインクルードし、バージョン番号を利用する。
+
+```cpp
+#include <TutorialConfig.hpp>
+
+...(略)...
+
+cout << Tutorial_VERSION_MAJOR << "."
+     << Tutorial_VERSION_MINOR << endl;
+```
