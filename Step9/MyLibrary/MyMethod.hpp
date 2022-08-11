@@ -1,0 +1,3 @@
+namespace mymodule {
+    void print();
+}
