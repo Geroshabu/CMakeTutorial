@@ -1,8 +1,20 @@
-add_library(MyMethods MyMethod.cpp print2.cpp)
+add_library(MyMethods MyMethod.cpp)
 
 target_include_directories(MyMethods
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-install(TARGETS MyMethods DESTINATION lib)
+add_library(PrintLibrary STATIC
+            print2.cpp
+            )
+
+target_link_libraries(MyMethods PRIVATE PrintLibrary)
+
+target_compile_definitions(MyMethods PRIVATE "EXPORTING_PRINT")
+
+set(installable_libs MyMethods)
+if(TARGET PrintLibrary)
+  list(APPEND installable_libs PrintLibrary)
+endif()
+install(TARGETS ${installable_libs} DESTINATION lib)
 install(FILES MyMethod.hpp DESTINATION include)
